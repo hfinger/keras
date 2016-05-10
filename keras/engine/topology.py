@@ -2283,7 +2283,8 @@ class Container(Layer):
                 else:
                     name = 'param_' + str(i)
                 weight_names.append(name.encode('utf8'))
-            g.attrs['weight_names'] = weight_names
+            if len(weight_names) > 0:
+                g.attrs['weight_names'] = weight_names
             for name, val in zip(weight_names, weight_values):
                 param_dset = g.create_dataset(name, val.shape,
                                               dtype=val.dtype)
@@ -2330,7 +2331,7 @@ class Container(Layer):
             weight_value_tuples = []
             for k, name in enumerate(layer_names):
                 g = f[name]
-                weight_names = [n.decode('utf8') for n in g.attrs['weight_names']]
+                weight_names = [n.decode('utf8') for n in g.attrs.get('weight_names', [])]
                 if len(weight_names):
                     weight_values = [g[weight_name] for weight_name in weight_names]
                     layer = flattened_layers[k]

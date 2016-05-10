@@ -62,14 +62,14 @@ def get_file(fname, origin, untar=False):
             else:
                 progbar.update(count*block_size)
 
-        error_msg = 'URL fetch failure on {}: {} -- {}'
+        error_msg = 'URL fetch failure on {} to {}: {} -- {}'
         try:
             try:
                 urlretrieve(origin, fpath, dl_progress)
             except URLError as e:
-                raise Exception(error_msg.format(origin, e.errno, e.reason))
+                raise Exception(error_msg.format(origin, fpath, e.errno, e.reason))
             except HTTPError as e:
-                raise Exception(error_msg.format(origin, e.code, e.msg))
+                raise Exception(error_msg.format(origin, fpath, e.code, e.msg))
         except (Exception, KeyboardInterrupt) as e:
             if os.path.exists(fpath):
                 os.remove(fpath)
