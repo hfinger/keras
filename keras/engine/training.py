@@ -1074,7 +1074,10 @@ class Model(Container):
             ins = x + y + sample_weights + [1.]
         else:
             ins = x + y + sample_weights
+        import time
+        start = time.time()
         self._make_train_function()
+        print('Compile Time: ', time.time() - start)
         f = self.train_function
 
         # prepare display labels
